@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspired - 励志金句</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="manifest" href="data:application/json;charset=utf-8,{%22name%22:%22Inspired%22,%22short_name%22:%22Inspired%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23000000%22,%22theme_color%22:%22%23667eea%22,%22icons%22:[{%22src%22:%22data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMzIiIGZpbGw9IiM2NjdlZWEiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyTDEzLjA5IDguMjZMMjAgOUwxMy4wOSAxNS43NEwxMiAyMkwxMC45MSAxNS43NEw0IDlMMTAuOTEgOC4yNkwxMiAyWiIvPgo8L3N2Zz4KPC9zdmc+%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .app-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.3s ease;
+        }
+        
+        .bg-mountain {
+            background-image: url('https://images.pexels.com/photos/8680210/pexels-photo-8680210.jpeg');
+        }
+        
+        .bg-starry {
+            background-image: url('https://images.pexels.com/photos/33219408/pexels-photo-33219408/free-photo-of-starry-night-with-stargazer-viewing-milky-way.jpeg');
+        }
+        
+        .bg-city {
+            background-image: url('https://images.pexels.com/photos/18806149/pexels-photo-18806149/free-photo-of-city-lights-around-sea-coast-at-night.jpeg');
+        }
+        
+        .bg-forest {
+            background-image: url('https://images.pexels.com/photos/1125776/pexels-photo-1125776.jpeg');
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .crown-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .crown-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 215, 0, 0.2);
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 40px 120px;
+            text-align: center;
+        }
+        
+        .quote-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .quote-text {
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .quote-author {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        
+        .bottom-actions {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 24px;
+            z-index: 10;
+        }
+        
+        .action-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .action-btn.liked {
+            color: #ff4757;
+        }
+        
+        .action-btn.bookmarked {
+            color: #ffa502;
+        }
+        
+        .bg-indicators {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .share-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .share-content {
+            width: 100%;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .share-modal.active .share-content {
+            transform: translateY(0);
+        }
+        
+        .share-preview {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .share-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+        }
+        
+        .share-preview-text {
+            position: relative;
+            z-index: 1;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .share-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .share-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .share-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .share-btn i {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .share-btn span {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .premium-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .premium-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .premium-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .premium-content {
+            flex: 1;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .premium-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        
+        .premium-price {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 32px;
+        }
+        
+        .premium-features {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        
+        .feature-item i {
+            color: #4ade80;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .premium-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .premium-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* 滑动动画效果 */
+        .slide-left {
+            animation: slideLeft 0.3s ease-out;
+        }
+        
+        .slide-right {
+            animation: slideRight 0.3s ease-out;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .slide-down {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideLeft {
+            from { transform: translateX(20px); opacity: 0.8; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideRight {
+            from { transform: translateX(-20px); opacity: 0.8; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0.5; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0.5; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .quote-text {
+                font-size: 24px;
+                padding: 0 10px;
+            }
+            
+            .quote-author {
+                font-size: 16px;
+            }
+            
+            .action-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+            }
+            
+            .bottom-actions {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="app-container bg-mountain">
+        <div class="overlay"></div>
+        
+        <div class="content">
+            <!-- 顶部栏 -->
+            <div class="top-bar">
+                <div></div>
+                <div class="crown-btn" onclick="showPremium()">
+                    <i class="fas fa-crown"></i>
+                </div>
+            </div>
+            
+            <!-- 主要内容 -->
+            <div class="main-content">
+                <div class="quote-container" id="quoteContainer">
+                    <div class="quote-text" id="quoteText">
+                        每一次的失败，都是成功的垫脚石
+                    </div>
+                    <div class="quote-author" id="quoteAuthor">
+                        — 史蒂夫·乔布斯
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 背景指示器 -->
+            <div class="bg-indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+            
+            <!-- 底部操作按钮 -->
+            <div class="bottom-actions">
+                <div class="action-btn" onclick="shareQuote()">
+                    <i class="fas fa-share"></i>
+                </div>
+                <div class="action-btn" onclick="toggleLike(this)">
+                    <i class="far fa-heart"></i>
+                </div>
+                <div class="action-btn" onclick="toggleBookmark(this)">
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="action-btn" onclick="downloadWallpaper()">
+                    <i class="fas fa-download"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 分享模态框 -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-content">
+            <div class="share-preview" id="sharePreview">
+                <div class="share-preview-text" id="sharePreviewText">
+                    每一次的失败，都是成功的垫脚石<br>— 史蒂夫·乔布斯
+                </div>
+            </div>
+            
+            <div class="share-actions">
+                <button class="share-btn" onclick="saveImage()">
+                    <i class="fas fa-download"></i>
+                    <span>保存图片</span>
+                </button>
+                <button class="share-btn" onclick="copyText()">
+                    <i class="fas fa-copy"></i>
+                    <span>复制文字</span>
+                </button>
+                <button class="share-btn" onclick="addToCollection()">
+                    <i class="fas fa-plus"></i>
+                    <span>添加收藏</span>
+                </button>
+            </div>
+            
+            <button class="premium-btn" onclick="closeShare()">关闭</button>
+        </div>
+    </div>
+    
+    <!-- 会员升级模态框 -->
+    <div id="premiumModal" class="premium-modal">
+        <div class="premium-header">
+            <h2>升级Premium</h2>
+            <div class="close-btn" onclick="closePremium()">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <div class="premium-content">
+            <div class="premium-title">
+                <i class="fas fa-crown" style="color: #ffd700; margin-right: 8px;"></i>
+                Inspired Premium
+            </div>
+            
+            <div class="premium-price">
+                ¥12.9<span style="font-size: 16px; opacity: 0.8;">/月</span>
+            </div>
+            
+            <div class="premium-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>解锁全部背景场景</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>永久更新金句库</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>4K超清壁纸下载</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>跨平台数据同步</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>无广告纯净体验</span>
+                </div>
+            </div>
+            
+            <button class="premium-btn" onclick="upgradePremium()">
+                <i class="fas fa-star"></i>
+                立即升级会员
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const quotes = [
+            { text: "每一次的失败，都是成功的垫脚石", author: "史蒂夫·乔布斯" },
+            { text: "创新就是把各种事物整合到一起", author: "史蒂夫·乔布斯" },
+            { text: "做你没做过的事情叫成长，做你不愿意做的事情叫改变", author: "埃隆·马斯克" },
+            { text: "当你足够想要某样东西时，整个宇宙都会帮你实现它", author: "埃隆·马斯克" },
+            { text: "今天很残酷，明天更残酷，后天很美好", author: "马云" },
+            { text: "机会只给准备好的人", author: "马云" },
+            { text: "以大多数人努力程度之低，根本轮不到拼天赋", author: "张一鸣" },
+            { text: "延迟满足感是成功的关键", author: "张一鸣" }
+        ];
+        
+        const backgrounds = ['bg-mountain', 'bg-starry', 'bg-city', 'bg-forest'];
+        const backgroundImages = [
+            'https://images.pexels.com/photos/8680210/pexels-photo-8680210.jpeg',
+            'https://images.pexels.com/photos/33219408/pexels-photo-33219408/free-photo-of-starry-night-with-stargazer-viewing-milky-way.jpeg',
+            'https://images.pexels.com/photos/18806149/pexels-photo-18806149/free-photo-of-city-lights-around-sea-coast-at-night.jpeg',
+            'https://images.pexels.com/photos/1125776/pexels-photo-1125776.jpeg'
+        ];
+        
+        let currentBg = 0;
+        let currentQuote = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isVerticalSwipe = false;
+        
+        function updateBackground(direction) {
+            const app = document.getElementById('app');
+            app.className = `app-container ${backgrounds[currentBg]}`;
+            
+            // 添加简单的滑动效果
+            if (direction === 'left') {
+                app.classList.add('slide-left');
+            } else if (direction === 'right') {
+                app.classList.add('slide-right');
+            }
+            
+            // 移除动画类
+            setTimeout(() => {
+                app.classList.remove('slide-left', 'slide-right');
+            }, 300);
+            
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentBg);
+            });
+        }
+        
+        function updateQuote(direction) {
+            const quote = quotes[currentQuote];
+            const quoteContainer = document.getElementById('quoteContainer');
+            
+            // 添加滑动动画效果
+            if (direction === 'up') {
+                quoteContainer.classList.add('slide-up');
+            } else if (direction === 'down') {
+                quoteContainer.classList.add('slide-down');
+            }
+            
+            document.getElementById('quoteText').textContent = quote.text;
+            document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+            
+            const sharePreviewText = document.getElementById('sharePreviewText');
+            sharePreviewText.innerHTML = `${quote.text}<br>— ${quote.author}`;
+            
+            const sharePreview = document.getElementById('sharePreview');
+            sharePreview.style.backgroundImage = `url('${backgroundImages[currentBg]}')`;
+            
+            // 移除动画类
+            setTimeout(() => {
+                quoteContainer.classList.remove('slide-up', 'slide-down');
+            }, 300);
+        }
+        
+        // 触摸事件
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isVerticalSwipe = false;
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            const deltaX = Math.abs(touchX - touchStartX);
+            const deltaY = Math.abs(touchY - touchStartY);
+            
+            if (deltaY > deltaX && deltaY > 30) {
+                isVerticalSwipe = true;
+            }
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaX = touchStartX - touchEndX;
+            const deltaY = touchStartY - touchEndY;
+            
+            if (isVerticalSwipe && Math.abs(deltaY) > 50) {
+                // 垂直滑动 - 切换金句
+                if (deltaY > 0) {
+                    // 上滑 - 下一句
+                    currentQuote = (currentQuote + 1) % quotes.length;
+                    updateQuote('up');
+                } else {
+                    // 下滑 - 上一句
+                    currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+                    updateQuote('down');
+                }
+            } else if (!isVerticalSwipe && Math.abs(deltaX) > 50) {
+                // 水平滑动 - 切换背景
+                if (deltaX > 0) {
+                    // 左滑 - 下一个背景
+                    if (currentBg < backgrounds.length - 1) {
+                        currentBg++;
+                        updateBackground('left');
+                        updateQuote();
+                    } else {
+                        // 到达最后一个背景，显示会员页面
+                        showPremium();
+                    }
+                } else {
+                    // 右滑 - 上一个背景
+                    if (currentBg > 0) {
+                        currentBg--;
+                        updateBackground('right');
+                        updateQuote();
+                    }
+                }
+            }
+        });
+        
+        // 键盘事件
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (currentBg > 0) {
+                        currentBg--;
+                        updateBackground('right');
+                        updateQuote();
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (currentBg < backgrounds.length - 1) {
+                        currentBg++;
+                        updateBackground('left');
+                        updateQuote();
+                    } else {
+                        showPremium();
+                    }
+                    break;
+                case 'ArrowUp':
+                    currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+                    updateQuote('down');
+                    break;
+                case 'ArrowDown':
+                    currentQuote = (currentQuote + 1) % quotes.length;
+                    updateQuote('up');
+                    break;
+            }
+        });
+        
+        function shareQuote() {
+            const quote = quotes[currentQuote];
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Inspired 励志金句',
+                    text: `${quote.text} — ${quote.author}`,
+                    url: window.location.href
+                });
+            } else {
+                document.getElementById('shareModal').classList.add('active');
+            }
+        }
+        
+        function closeShare() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+        
+        function toggleLike(btn) {
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                btn.classList.add('liked');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                btn.classList.remove('liked');
+            }
+        }
+        
+        function toggleBookmark(btn) {
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                btn.classList.add('bookmarked');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                btn.classList.remove('bookmarked');
+            }
+        }
+        
+        function downloadWallpaper() {
+            const quote = quotes[currentQuote];
+            
+            // 创建canvas生成壁纸
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1080;
+            canvas.height = 1920;
+            
+            // 创建临时图片
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                // 绘制背景
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                // 添加半透明遮罩
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制文字
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // 主要文字
+                ctx.font = 'bold 64px "Noto Sans SC"';
+                const lines = wrapText(ctx, quote.text, canvas.width - 200);
+                const lineHeight = 80;
+                const startY = canvas.height / 2 - ((lines.length - 1) * lineHeight) / 2;
+                
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, canvas.width / 2, startY + i * lineHeight);
+                });
+                
+                // 作者
+                ctx.font = '32px "Noto Sans SC"';
+                ctx.fillText(`— ${quote.author}`, canvas.width / 2, startY + lines.length * lineHeight + 60);
+                
+                // 下载
+                const link = document.createElement('a');
+                link.download = `inspired-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            };
+            img.src = backgroundImages[currentBg];
+        }
+        
+        function wrapText(ctx, text, maxWidth) {
+            const words = text.split('');
+            const lines = [];
+            let currentLine = '';
+            
+            for (let i = 0; i < words.length; i++) {
+                const testLine = currentLine + words[i];
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > maxWidth && i > 0) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+        
+        function showPremium() {
+            document.getElementById('premiumModal').classList.add('active');
+        }
+        
+        function closePremium() {
+            document.getElementById('premiumModal').classList.remove('active');
+        }
+        
+        function upgradePremium() {
+            alert('感谢您的支持！实际应用中这里会跳转到支付页面。');
+            closePremium();
+        }
+        
+        function saveImage() {
+            downloadWallpaper();
+            closeShare();
+        }
+        
+        function copyText() {
+            const quote = quotes[currentQuote];
+            const text = `${quote.text} — ${quote.author}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('金句已复制到剪贴板！');
+            });
+            closeShare();
+        }
+        
+        function addToCollection() {
+            alert('已添加到收藏！');
+            closeShare();
+        }
+        
+        // 初始化
+        updateQuote();
+        
+        // 阻止默认的触摸行为
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+        
+        // PWA安装提示
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 可以在这里显示安装提示
+            setTimeout(() => {
+                if (confirm('将Inspired添加到主屏幕，获得更好的使用体验？')) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        deferredPrompt = null;
+                    });
+                }
+            }, 3000);
+        });
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9701b23b8bd24145","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.8.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDirLYzzu2kv1QmNF7NwVrJ5cO4NtWDOB7FrxLbOl7JJIFVxnstifqhQeWpy9bey%2BQCJXtHVpbQ6qrHW5wzJtNT7LxbvzOYQDX0zvIg3YtAONByJHAPu7XPSGUCz2kzGekrVppMO%2BTtF7vektsWvLXzvYdIMOo0DZvk7CD7Pr3M4Ho7p2Zk3mdecMxM5d9vOStpCV97TrltAEHCpQQvVENUrRvfHpJ8LyNCVshIGfNUc9Rb1ejUaISYAXKGIJpH%2FtdiKxej1Mnk3jPECL1QdkLEsIvJ1EJlWsrfrqxxO9TGNq2CTg%2BE9X4vse1U0PyViyOrsr4F7%2BO4lYFFWUP1ysTR2bhwk1D4yY%2BFcckA%2FXRNHfH7z%2FBbJcZu6eLkqnNRQWgC65pOMO5mUU7Y3ZJSJdyLmn7aOp6ypamsfEAZjsgkMK0i1NYA%2FmGTMfIiKwAdDftgAKOLx3%2F7aYx7F7C38d%2FMzAmL12dIykuSXJuFmgd%2B6GXSH%2FZ6bjqZOC1RqidmrY2w%3D%3D";
+        window.__genspark_locale = "zh-CN";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDirLYzzu2kv1QmNF7NwVrJ5cO4NtWDOB7FrxLbOl7JJIFVxnstifqhQeWpy9bey+QCJXtHVpbQ6qrHW5wzJtNT7LxbvzOYQDX0zvIg3YtAONByJHAPu7XPSGUCz2kzGekrVppMO+TtF7vektsWvLXzvYdIMOo0DZvk7CD7Pr3M4Ho7p2Zk3mdecMxM5d9vOStpCV97TrltAEHCpQQvVENUrRvfHpJ8LyNCVshIGfNUc9Rb1ejUaISYAXKGIJpH/tdiKxej1Mnk3jPECL1QdkLEsIvJ1EJlWsrfrqxxO9TGNq2CTg+E9X4vse1U0PyViyOrsr4F7+O4lYFFWUP1ysTR2bhwk1D4yY+FcckA/XRNHfH7z/BbJcZu6eLkqnNRQWgC65pOMO5mUU7Y3ZJSJdyLmn7aOp6ypamsfEAZjsgkMK0i1NYA/mGTMfIiKwAdDftgAKOLx3/7aYx7F7C38d/MzAmL12dIykuSXJuFmgd+6GXSH/Z6bjqZOC1RqidmrY2w==";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
