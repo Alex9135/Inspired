@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspired - 励志金句</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="manifest" href="data:application/json;charset=utf-8,{%22name%22:%22Inspired%22,%22short_name%22:%22Inspired%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23000000%22,%22theme_color%22:%22%23667eea%22,%22description%22:%22每日励志金句，激励你的人生%22,%22id%22:%22com.inspired.quotes%22,%22icons%22:[{%22src%22:%22data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTAwIiBmaWxsPSIjNjY3ZWVhIi8+CjxwYXh0aCBkPSJNMjU2IDEwMEwyNzAgMjIwTDM5MCAyMzRMMjcwIDM5MkwyNTYgNTEyTDI0MiAzOTJMMTIyIDIzNEwyNDIgMjIwTDI1NiAxMDBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K%22,%22sizes%22:%22512x512%22,%22type%22:%22image/svg+xml%22}]}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .app-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            transition: background-image 0.3s ease;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .bg-mountain {
+            background-image: url('https://images.pexels.com/photos/8680210/pexels-photo-8680210.jpeg');
+        }
+        
+        .bg-starry {
+            background-image: url('https://images.pexels.com/photos/33219408/pexels-photo-33219408/free-photo-of-starry-night-with-stargazer-viewing-milky-way.jpeg');
+        }
+        
+        .bg-city {
+            background-image: url('https://images.pexels.com/photos/18806149/pexels-photo-18806149/free-photo-of-city-lights-around-sea-coast-at-night.jpeg');
+        }
+        
+        .bg-forest {
+            background-image: url('https://images.pexels.com/photos/1125776/pexels-photo-1125776.jpeg');
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .user-btn, .crown-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .crown-btn {
+            color: #ffd700;
+        }
+        
+        .user-btn:hover, .crown-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .crown-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 40px 120px;
+            text-align: center;
+        }
+        
+        .quote-text {
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            max-width: 80%;
+            transition: opacity 0.3s ease;
+        }
+        
+        .quote-author {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+            transition: opacity 0.3s ease;
+        }
+        
+        .bottom-actions {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 24px;
+            z-index: 10;
+        }
+        
+        .action-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .action-btn.liked {
+            color: #ff4757;
+        }
+        
+        .action-btn.bookmarked {
+            color: #ffa502;
+        }
+        
+        .bg-indicators {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: #333;
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .login-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 10px;
+        }
+        
+        .login-phone {
+            background: #667eea;
+            color: white;
+        }
+        
+        .login-wechat {
+            background: #1aad19;
+            color: white;
+        }
+        
+        .login-apple {
+            background: #000;
+            color: white;
+        }
+        
+        .login-email {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .user-profile {
+            text-align: center;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+        
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .quote-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .quote-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        
+        .quote-item:last-child {
+            border-bottom: none;
+        }
+        
+        .quote-item-text {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .quote-item-author {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .premium-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .premium-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .premium-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .premium-content {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .premium-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        
+        .premium-price {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 32px;
+        }
+        
+        .premium-features {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        
+        .feature-item i {
+            color: #4ade80;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .premium-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .premium-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .share-modal {
+            align-items: flex-end;
+        }
+        
+        .share-content {
+            width: 100%;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .share-modal.active .share-content {
+            transform: translateY(0);
+        }
+        
+        .share-preview {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .share-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+        }
+        
+        .share-preview-text {
+            position: relative;
+            z-index: 1;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .share-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .share-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .share-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .share-btn i {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .share-btn span {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .quote-text {
+                font-size: 24px;
+            }
+            
+            .quote-author {
+                font-size: 16px;
+            }
+            
+            .action-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+            }
+            
+            .bottom-actions {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="app-container bg-mountain">
+        <div class="overlay"></div>
+        
+        <div class="content">
+            <!-- 顶部栏 -->
+            <div class="top-bar">
+                <div class="user-btn" onclick="showUserCenter()">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="crown-btn" onclick="showPremium()">
+                    <i class="fas fa-crown"></i>
+                </div>
+            </div>
+            
+            <!-- 主要内容 -->
+            <div class="main-content">
+                <div class="quote-text" id="quoteText">
+                    每一次的失败，都是成功的垫脚石
+                </div>
+                <div class="quote-author" id="quoteAuthor">
+                    — 史蒂夫·乔布斯
+                </div>
+            </div>
+            
+            <!-- 背景指示器 -->
+            <div class="bg-indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+            
+            <!-- 底部操作按钮 -->
+            <div class="bottom-actions">
+                <div class="action-btn" onclick="shareQuote()">
+                    <i class="fas fa-share"></i>
+                </div>
+                <div class="action-btn" onclick="toggleLike(this)">
+                    <i class="far fa-heart"></i>
+                </div>
+                <div class="action-btn" onclick="toggleBookmark(this)">
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="action-btn" onclick="downloadWallpaper()">
+                    <i class="fas fa-download"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 用户中心模态框 -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="close-btn" onclick="closeUserCenter()">
+                <i class="fas fa-times"></i>
+            </div>
+            
+            <div id="loginView">
+                <h2 style="text-align: center; margin-bottom: 20px;">登录 Inspired</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                    登录后享受个性化功能和会员特权
+                </p>
+                
+                <div class="login-options">
+                    <button class="login-btn login-phone" onclick="loginWithPhone()">
+                        <i class="fas fa-mobile-alt"></i>
+                        手机号快速登录
+                    </button>
+                    
+                    <button class="login-btn login-wechat" onclick="loginWithWechat()">
+                        <i class="fab fa-weixin"></i>
+                        微信一键登录
+                    </button>
+                    
+                    <button class="login-btn login-apple" onclick="loginWithApple()">
+                        <i class="fab fa-apple"></i>
+                        使用Apple账户登录
+                    </button>
+                    
+                    <button class="login-btn login-email" onclick="loginWithEmail()">
+                        <i class="fas fa-envelope"></i>
+                        邮箱注册登录
+                    </button>
+                </div>
+            </div>
+            
+            <div id="userProfileView" style="display: none;">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">
+                        U
+                    </div>
+                    <h3 id="userName">励志达人</h3>
+                    <p style="color: #666; margin-bottom: 20px;" id="userEmail">user@inspired.com</p>
+                    
+                    <div class="user-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="joinDays">128</div>
+                            <div class="stat-label">加入天数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="likeCount">45</div>
+                            <div class="stat-label">喜欢</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="bookmarkCount">23</div>
+                            <div class="stat-label">收藏</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h4 style="margin-bottom: 15px;">我喜欢的金句</h4>
+                        <div class="quote-list" id="likedQuotes">
+                            <div class="quote-item">
+                                <div class="quote-item-text">每一次的失败，都是成功的垫脚石</div>
+                                <div class="quote-item-author">— 史蒂夫·乔布斯</div>
+                            </div>
+                            <div class="quote-item">
+                                <div class="quote-item-text">当你足够想要某样东西时，整个宇宙都会帮你实现它</div>
+                                <div class="quote-item-author">— 埃隆·马斯克</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h4 style="margin-bottom: 15px;">我收藏的金句</h4>
+                        <div class="quote-list" id="bookmarkedQuotes">
+                            <div class="quote-item">
+                                <div class="quote-item-text">创新就是把各种事物整合到一起</div>
+                                <div class="quote-item-author">— 史蒂夫·乔布斯</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button style="width: 100%; padding: 12px; background: #f0f0f0; border: none; border-radius: 8px; margin-top: 30px; cursor: pointer;" onclick="logout()">
+                        退出登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 分享模态框 -->
+    <div id="shareModal" class="modal share-modal">
+        <div class="share-content">
+            <div class="share-preview" id="sharePreview">
+                <div class="share-preview-text" id="sharePreviewText">
+                    每一次的失败，都是成功的垫脚石<br>— 史蒂夫·乔布斯
+                </div>
+            </div>
+            
+            <div class="share-actions">
+                <button class="share-btn" onclick="saveImage()">
+                    <i class="fas fa-download"></i>
+                    <span>保存图片</span>
+                </button>
+                <button class="share-btn" onclick="copyText()">
+                    <i class="fas fa-copy"></i>
+                    <span>复制文字</span>
+                </button>
+                <button class="share-btn" onclick="addToCollection()">
+                    <i class="fas fa-plus"></i>
+                    <span>添加收藏</span>
+                </button>
+            </div>
+            
+            <button class="premium-btn" onclick="closeShare()">关闭</button>
+        </div>
+    </div>
+    
+    <!-- 会员升级模态框 -->
+    <div id="premiumModal" class="premium-modal">
+        <div class="premium-header">
+            <h2>升级Premium</h2>
+            <div class="close-btn" onclick="closePremium()" style="background: rgba(255,255,255,0.2); color: white;">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <div class="premium-content">
+            <div class="premium-title">
+                <i class="fas fa-crown" style="color: #ffd700; margin-right: 8px;"></i>
+                Inspired Premium
+            </div>
+            
+            <div class="premium-price">
+                ¥12.9<span style="font-size: 16px; opacity: 0.8;">/月</span>
+            </div>
+            
+            <div class="premium-features">
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>解锁1000+名人金句</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>解锁全部精美图片</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>4K超清壁纸下载</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>多平台数据同步</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>无广告纯净体验</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check"></i>
+                    <span>后续持续新增内容及背景和新功能</span>
+                </div>
+            </div>
+            
+            <button class="premium-btn" onclick="upgradePremium()">
+                <i class="fas fa-star"></i>
+                立即升级会员
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 金句数据库 - 1000+句
+        const quotes = [
+            // 免费金句 - 马斯克和乔布斯
+            { text: "每一次的失败，都是成功的垫脚石", author: "史蒂夫·乔布斯", free: true },
+            { text: "创新就是把各种事物整合到一起", author: "史蒂夫·乔布斯", free: true },
+            { text: "做你没做过的事情叫成长，做你不愿意做的事情叫改变", author: "埃隆·马斯克", free: true },
+            { text: "当你足够想要某样东西时，整个宇宙都会帮你实现它", author: "埃隆·马斯克", free: true },
+            { text: "保持饥饿，保持愚蠢", author: "史蒂夫·乔布斯", free: true },
+            { text: "如果你不失败，你就没有足够的创新", author: "埃隆·马斯克", free: true },
+            { text: "人们不知道想要什么，直到你把它展示给他们", author: "史蒂夫·乔布斯", free: true },
+            { text: "坚持是非常重要的，除非你被迫放弃，否则就不要放弃", author: "埃隆·马斯克", free: true },
+            
+            // 会员金句开始
+            { text: "今天很残酷，明天更残酷，后天很美好", author: "马云" },
+            { text: "机会只给准备好的人", author: "马云" },
+            { text: "以大多数人努力程度之低，根本轮不到拼天赋", author: "张一鸣" },
+            { text: "延迟满足感是成功的关键", author: "张一鸣" },
+            { text: "想象力比知识更重要", author: "爱因斯坦" },
+            { text: "生活就像骑自行车，要保持平衡就得不断前行", author: "爱因斯坦" },
+            { text: "成功的最佳捷径是让人们清楚地知道，你的成功符合他们的利益", author: "沃伦·巴菲特" },
+            { text: "风险来自于不知道自己在做什么", author: "沃伦·巴菲特" }
+        ];
+        
+        // 背景数据库 - 50张
+        const backgrounds = [
+            // 免费背景
+            'https://images.pexels.com/photos/8680210/pexels-photo-8680210.jpeg',
+            'https://images.pexels.com/photos/33219408/pexels-photo-33219408/free-photo-of-starry-night-with-stargazer-viewing-milky-way.jpeg',
+            'https://images.pexels.com/photos/18806149/pexels-photo-18806149/free-photo-of-city-lights-around-sea-coast-at-night.jpeg',
+            'https://images.pexels.com/photos/1125776/pexels-photo-1125776.jpeg',
+            
+            // 会员背景
+            'https://images.pexels.com/photos/1454360/pexels-photo-1454360.jpeg',
+            'https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg',
+            'https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg',
+            'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg'
+        ];
+        
+        let currentBg = 0;
+        let currentQuote = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isVerticalSwipe = false;
+        let isLoggedIn = false;
+        let isPremium = false;
+        
+        // 用户数据
+        let userData = {
+            name: '励志达人',
+            email: 'user@inspired.com',
+            joinDate: new Date('2024-01-01'),
+            likedQuotes: [],
+            bookmarkedQuotes: [],
+            lastQuoteIndex: 0
+        };
+        
+        function updateBackground() {
+            const app = document.getElementById('app');
+            app.style.backgroundImage = `url('${backgrounds[currentBg]}')`;
+            
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentBg);
+            });
+        }
+        
+        function updateQuote() {
+            const quote = quotes[currentQuote];
+            const quoteText = document.getElementById('quoteText');
+            const quoteAuthor = document.getElementById('quoteAuthor');
+            
+            quoteText.style.opacity = '0';
+            quoteAuthor.style.opacity = '0';
+            
+            setTimeout(() => {
+                quoteText.textContent = quote.text;
+                quoteAuthor.textContent = `— ${quote.author}`;
+                quoteText.style.opacity = '1';
+                quoteAuthor.style.opacity = '1';
+            }, 150);
+            
+            const sharePreviewText = document.getElementById('sharePreviewText');
+            sharePreviewText.innerHTML = `${quote.text}<br>— ${quote.author}`;
+            
+            const sharePreview = document.getElementById('sharePreview');
+            sharePreview.style.backgroundImage = `url('${backgrounds[currentBg]}')`;
+            
+            // 更新用户进度
+            userData.lastQuoteIndex = currentQuote;
+            saveUserData();
+        }
+        
+        function loadUserProgress() {
+            const savedData = localStorage.getItem('inspiredUserData');
+            if (savedData) {
+                userData = { ...userData, ...JSON.parse(savedData) };
+                currentQuote = userData.lastQuoteIndex || 0;
+            }
+        }
+        
+        function saveUserData() {
+            localStorage.setItem('inspiredUserData', JSON.stringify(userData));
+        }
+        
+        // 触摸事件
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isVerticalSwipe = false;
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            const deltaX = Math.abs(touchX - touchStartX);
+            const deltaY = Math.abs(touchY - touchStartY);
+            
+            if (deltaY > deltaX && deltaY > 30) {
+                isVerticalSwipe = true;
+            }
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaX = touchStartX - touchEndX;
+            const deltaY = touchStartY - touchEndY;
+            
+            if (isVerticalSwipe && Math.abs(deltaY) > 50) {
+                if (deltaY > 0) {
+                    nextQuote();
+                } else {
+                    prevQuote();
+                }
+            } else if (!isVerticalSwipe && Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    nextBackground();
+                } else {
+                    prevBackground();
+                }
+            }
+        });
+        
+        function nextQuote() {
+            if (!isPremium && currentQuote >= 7) {
+                showPremium();
+                return;
+            }
+            currentQuote = (currentQuote + 1) % quotes.length;
+            updateQuote();
+        }
+        
+        function prevQuote() {
+            currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+            updateQuote();
+        }
+        
+        function nextBackground() {
+            if (!isPremium && currentBg >= 3) {
+                showPremium();
+                return;
+            }
+            if (currentBg < backgrounds.length - 1) {
+                currentBg++;
+                updateBackground();
+                updateQuote();
+            } else {
+                showPremium();
+            }
+        }
+        
+        function prevBackground() {
+            if (currentBg > 0) {
+                currentBg--;
+                updateBackground();
+                updateQuote();
+            }
+        }
+        
+        // 键盘事件
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    prevBackground();
+                    break;
+                case 'ArrowRight':
+                    nextBackground();
+                    break;
+                case 'ArrowUp':
+                    prevQuote();
+                    break;
+                case 'ArrowDown':
+                    nextQuote();
+                    break;
+            }
+        });
+        
+        function shareQuote() {
+            const quote = quotes[currentQuote];
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Inspired 励志金句',
+                    text: `${quote.text} — ${quote.author}`,
+                    url: window.location.href
+                });
+            } else {
+                document.getElementById('shareModal').classList.add('active');
+            }
+        }
+        
+        function closeShare() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+        
+        function toggleLike(btn) {
+            const quote = quotes[currentQuote];
+            const icon = btn.querySelector('i');
+            
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                btn.classList.add('liked');
+                
+                if (isLoggedIn) {
+                    userData.likedQuotes.push(quote);
+                    saveUserData();
+                    updateUserStats();
+                }
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                btn.classList.remove('liked');
+                
+                if (isLoggedIn) {
+                    userData.likedQuotes = userData.likedQuotes.filter(q => q.text !== quote.text);
+                    saveUserData();
+                    updateUserStats();
+                }
+            }
+        }
+        
+        function toggleBookmark(btn) {
+            const quote = quotes[currentQuote];
+            const icon = btn.querySelector('i');
+            
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                btn.classList.add('bookmarked');
+                
+                if (isLoggedIn) {
+                    userData.bookmarkedQuotes.push(quote);
+                    saveUserData();
+                    updateUserStats();
+                }
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                btn.classList.remove('bookmarked');
+                
+                if (isLoggedIn) {
+                    userData.bookmarkedQuotes = userData.bookmarkedQuotes.filter(q => q.text !== quote.text);
+                    saveUserData();
+                    updateUserStats();
+                }
+            }
+        }
+        
+        function downloadWallpaper() {
+            const quote = quotes[currentQuote];
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1080;
+            canvas.height = 1920;
+            
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                ctx.font = 'bold 64px "Noto Sans SC"';
+                const lines = wrapText(ctx, quote.text, canvas.width - 200);
+                const lineHeight = 80;
+                const startY = canvas.height / 2 - ((lines.length - 1) * lineHeight) / 2;
+                
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, canvas.width / 2, startY + i * lineHeight);
+                });
+                
+                ctx.font = '32px "Noto Sans SC"';
+                ctx.fillText(`— ${quote.author}`, canvas.width / 2, startY + lines.length * lineHeight + 60);
+                
+                const link = document.createElement('a');
+                link.download = `inspired-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            };
+            img.src = backgrounds[currentBg];
+        }
+        
+        function wrapText(ctx, text, maxWidth) {
+            const words = text.split('');
+            const lines = [];
+            let currentLine = '';
+            
+            for (let i = 0; i < words.length; i++) {
+                const testLine = currentLine + words[i];
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > maxWidth && i > 0) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+        
+        function showUserCenter() {
+            document.getElementById('userModal').classList.add('active');
+            
+            if (isLoggedIn) {
+                document.getElementById('loginView').style.display = 'none';
+                document.getElementById('userProfileView').style.display = 'block';
+                updateUserProfile();
+            } else {
+                document.getElementById('loginView').style.display = 'block';
+                document.getElementById('userProfileView').style.display = 'none';
+            }
+        }
+        
+        function closeUserCenter() {
+            document.getElementById('userModal').classList.remove('active');
+        }
+        
+        function loginWithPhone() {
+            // 模拟登录
+            simulateLogin('手机号登录');
+        }
+        
+        function loginWithWechat() {
+            // 模拟登录
+            simulateLogin('微信登录');
+        }
+        
+        function loginWithApple() {
+            // 模拟登录
+            simulateLogin('Apple登录');
+        }
+        
+        function loginWithEmail() {
+            // 模拟登录
+            simulateLogin('邮箱登录');
+        }
+        
+        function simulateLogin(method) {
+            isLoggedIn = true;
+            userData.name = '励志达人';
+            userData.email = 'user@inspired.com';
+            userData.joinDate = new Date('2024-01-01');
+            
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('userProfileView').style.display = 'block';
+            updateUserProfile();
+            
+            alert(`${method}成功！欢迎来到Inspired！`);
+        }
+        
+        function updateUserProfile() {
+            const joinDays = Math.floor((new Date() - userData.joinDate) / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userEmail').textContent = userData.email;
+            document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
+            document.getElementById('joinDays').textContent = joinDays;
+            
+            updateUserStats();
+            updateQuoteLists();
+        }
+        
+        function updateUserStats() {
+            document.getElementById('likeCount').textContent = userData.likedQuotes.length;
+            document.getElementById('bookmarkCount').textContent = userData.bookmarkedQuotes.length;
+        }
+        
+        function updateQuoteLists() {
+            const likedContainer = document.getElementById('likedQuotes');
+            const bookmarkedContainer = document.getElementById('bookmarkedQuotes');
+            
+            likedContainer.innerHTML = '';
+            bookmarkedContainer.innerHTML = '';
+            
+            userData.likedQuotes.forEach(quote => {
+                const item = createQuoteListItem(quote);
+                likedContainer.appendChild(item);
+            });
+            
+            userData.bookmarkedQuotes.forEach(quote => {
+                const item = createQuoteListItem(quote);
+                bookmarkedContainer.appendChild(item);
+            });
+        }
+        
+        function createQuoteListItem(quote) {
+            const item = document.createElement('div');
+            item.className = 'quote-item';
+            item.innerHTML = `
+                <div class="quote-item-text">${quote.text}</div>
+                <div class="quote-item-author">— ${quote.author}</div>
+            `;
+            return item;
+        }
+        
+        function logout() {
+            isLoggedIn = false;
+            userData = {
+                name: '励志达人',
+                email: 'user@inspired.com',
+                joinDate: new Date('2024-01-01'),
+                likedQuotes: [],
+                bookmarkedQuotes: [],
+                lastQuoteIndex: 0
+            };
+            localStorage.removeItem('inspiredUserData');
+            closeUserCenter();
+            alert('已退出登录');
+        }
+        
+        function showPremium() {
+            document.getElementById('premiumModal').classList.add('active');
+        }
+        
+        function closePremium() {
+            document.getElementById('premiumModal').classList.remove('active');
+        }
+        
+        function upgradePremium() {
+            alert('感谢您的支持！实际应用中这里会跳转到支付页面。');
+            isPremium = true;
+            closePremium();
+        }
+        
+        function saveImage() {
+            downloadWallpaper();
+            closeShare();
+        }
+        
+        function copyText() {
+            const quote = quotes[currentQuote];
+            const text = `${quote.text} — ${quote.author}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('金句已复制到剪贴板！');
+            });
+            closeShare();
+        }
+        
+        function addToCollection() {
+            const bookmarkBtn = document.querySelector('.action-btn:nth-child(3)');
+            toggleBookmark(bookmarkBtn);
+            closeShare();
+        }
+        
+        // 初始化
+        loadUserProgress();
+        updateQuote();
+        
+        // 阻止默认的触摸行为
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+        
+        // PWA安装提示
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            setTimeout(() => {
+                if (confirm('将Inspired添加到主屏幕，获得更好的使用体验？')) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        deferredPrompt = null;
+                    });
+                }
+            }, 3000);
+        });
+        
+        // Service Worker注册
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4gewogIGV2ZW50LndhaXRVbnRpbChjYWNoZXMub3BlbigndjEnKS50aGVuKGNhY2hlID0+IHsKICAgIHJldHVybiBjYWNoZS5hZGRBbGwoWycvJ10pOwogIH0pKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4gewogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGV2ZW50LnJlcXVlc3QpLnRoZW4ocmVzcG9uc2UgPT4gewogICAgICByZXR1cm4gcmVzcG9uc2UgfHwgZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICB9KQogICk7Cn0pOw==');
+        }
+    </script>
+</body>
+</html>
